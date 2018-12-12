@@ -1,4 +1,4 @@
-# Reset Password Self Service for Tech
+# Reset Password via Self Service for Technicians
 
 a script that can be used in Self Service for your helpdesk technicians when a end-users his password is out of sync and is Filevault enabled.
 
