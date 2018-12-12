@@ -34,7 +34,7 @@ sleep 05
 
 
 # Pass the credentials for the management account that is authorized with FileVault 2
-adminName='local-admin'
+adminName='your local admin account'
 adminPass="$(osascript -e 'Tell application "System Events" to display dialog "Please enter the password for local-admin" default answer "" with title "Get admin privilliges" with text buttons {"Ok"} default button 1 with hidden answer' -e 'text returned of result')"
 
 # Get the logged in username
