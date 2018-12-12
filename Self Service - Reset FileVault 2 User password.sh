@@ -2,28 +2,28 @@
 
 # Loop until valid input is entered or Cancel is pressed.
 while :; do
-	userName=$(osascript -e 'Tell application "System Events" to display dialog "Hi, 
+    userName=$(osascript -e 'Tell application "System Events" to display dialog "Hi, 
 
 Ensure that you have set a new password for the user via Active Directory.
 
 Please now insert the username of the user" default answer "" with title "Requesting Username" with text buttons {"Submit"} with icon caution' -e 'text returned of result' 2>/dev/null)
 
-	if (( $? ));
-		then exit 1; fi  # Abort, if technician pressed Cancel.
+    if (( $? ));
+        then exit 1; fi  # Abort, if technician pressed Cancel.
 
-		userName=$(echo "$userName" | sed 's/^ *//' | sed 's/ *$//')  # Trim leading and trailing whitespace.
+        userName=$(echo "$userName" | sed 's/^ *//' | sed 's/ *$//')  # Trim leading and trailing whitespace.
 
-	if [[ -z "$userName" ]]; then
+    if [[ -z "$userName" ]]; then
 
-		# The technician left the username blank
-		osascript -e 'Tell application "System Events" to display alert "You must enter the username. Please try again" as warning' >/dev/null
+        # The technician left the username blank
+        osascript -e 'Tell application "System Events" to display alert "You must enter the username. Please try again" as warning' >/dev/null
 
-		# Continue loop to prompt again.
+        # Continue loop to prompt again.
 
-		else
-			# Valid input: exit loop and continue.
-			break
-	fi
+        else
+            # Valid input: exit loop and continue.
+            break
+    fi
 done
 
 # Remove user from FileVault 2.
@@ -34,11 +34,8 @@ sleep 05
 
 
 # Pass the credentials for the management account that is authorized with FileVault 2
-adminName='your local admin account'
-adminPass="$(osascript -e 'Tell application "System Events" to display dialog "Please enter the password for local-admin" default answer "" with title "Get admin privilliges" with text buttons {"Ok"} default button 1 with hidden answer' -e 'text returned of result')"
-
-# Get the logged in username
-#userName=`logname`
+adminName='PUT IN HERE YOUR SUPPORT ACCOUNT'
+adminPass="$(osascript -e 'Tell application "System Events" to display dialog "Please enter the password for SUPPORT ACCOUNT" default answer "" with title "Get admin privilliges" with text buttons {"Ok"} default button 1 with hidden answer' -e 'text returned of result')"
 
 # Check if the logged on user is already authorized with FileVault 2
 userCheck=`fdesetup list | awk -v usrN="$userName" -F, 'index($0, usrN) {print $1}'`
@@ -76,12 +73,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
 <string>'$adminPass'</string>
 <key>AdditionalUsers</key>
 <array>
-	<dict>
-		<key>Username</key>
-		<string>'$userName'</string>
-		<key>Password</key>
-		<string>'$userPass'</string>
-	</dict>
+    <dict>
+        <key>Username</key>
+        <string>'$userName'</string>
+        <key>Password</key>
+        <string>'$userPass'</string>
+    </dict>
 </array>
 </dict>
 </plist>' > /tmp/fvenable.plist
@@ -102,7 +99,7 @@ osascript -e 'tell app "System Events" to display dialog "'${userName}' has been
 
 # Clean up
 if [[ -e /tmp/fvenable.plist ]]; then
-	srm /tmp/fvenable.plist
+    srm /tmp/fvenable.plist
 fi
 exit 0
 
